@@ -237,6 +237,11 @@
 </script>
 
 <script src="{{ url_for('static', filename='js/nikss.js') }}"></script>
+
+<!-- Load Razorpay Checkout before page-specific scripts that use Razorpay -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 {% block scripts %}{% endblock %}
 </body>
 </html>
+
