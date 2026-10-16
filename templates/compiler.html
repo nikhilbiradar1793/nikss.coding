@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% block title %}Online Compiler | NIKSS Coding Hub{% endblock %}
+{% block head %}
+<style>
+  .compiler-page{padding:28px 0 64px;color:#eef2ff}.compiler-hero{position:relative;overflow:hidden;padding:clamp(24px,5vw,52px);border:1px solid rgba(148,163,184,.18);border-radius:28px;background:radial-gradient(ellipse at 85% 10%,rgba(56,189,248,.17),transparent 36%),radial-gradient(ellipse at 10% 100%,rgba(124,58,237,.20),transparent 42%),linear-gradient(135deg,#0c1222,#101a2e 62%,#101525);box-shadow:0 24px 80px rgba(0,0,0,.22)}
+  .compiler-kicker{display:inline-flex;align-items:center;gap:9px;color:#a5f3fc;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}.compiler-kicker:before{content:"";width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 16px #34d399}.compiler-hero h1{max-width:780px;margin:18px 0 12px;font:700 clamp(34px,6vw,62px)/1.04 'Space Grotesk',sans-serif;letter-spacing:-.045em;color:#f8fafc}.compiler-hero h1 span{background:linear-gradient(90deg,#67e8f9,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}.compiler-hero p{max-width:680px;color:#aebbd2;font-size:clamp(15px,2vw,18px);line-height:1.75;margin:0}.compiler-stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:25px}.compiler-stat{padding:9px 13px;border:1px solid rgba(203,213,225,.15);border-radius:999px;background:rgba(15,23,42,.55);font-size:12px;color:#cbd5e1}.compiler-layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:20px;margin-top:22px}.language-panel,.editor-panel{border:1px solid rgba(148,163,184,.17);border-radius:22px;background:rgba(11,17,31,.9);box-shadow:0 16px 45px rgba(0,0,0,.16);min-width:0}.panel-heading{padding:20px 20px 13px}.panel-heading h2{font:700 17px 'Space Grotesk',sans-serif;margin:0;color:#f1f5f9}.panel-heading p{font-size:12px;color:#8795ad;margin:6px 0 0;line-height:1.6}.language-list{display:grid;gap:7px;padding:0 12px 14px}.language-option{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px;border:1px solid transparent;border-radius:13px;background:transparent;color:#cbd5e1;cursor:pointer;transition:.18s ease}.language-option:hover{background:rgba(148,163,184,.07);border-color:rgba(148,163,184,.12)}.language-option.active{background:linear-gradient(110deg,rgba(34,211,238,.12),rgba(139,92,246,.12));border-color:rgba(103,232,249,.35);color:#fff}.lang-icon{width:37px;height:37px;display:grid;place-items:center;flex:0 0 37px;border-radius:11px;background:#172338;color:#67e8f9;font:800 12px 'Space Grotesk',sans-serif}.language-option:nth-child(3) .lang-icon{color:#fb923c}.language-option:nth-child(4) .lang-icon{color:#facc15}.language-option:nth-child(6) .lang-icon{color:#c4b5fd}.lang-meta{display:flex;flex-direction:column;gap:4px;min-width:0}.lang-meta strong{font-size:13px}.lang-meta small{font-size:11px;color:#8290a8}.language-option .check{margin-left:auto;color:#67e8f9;opacity:0}.language-option.active .check{opacity:1}.editor-panel{overflow:hidden}.editor-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:15px 18px;border-bottom:1px solid rgba(148,163,184,.14);background:#0e1728}.file-tab{display:flex;align-items:center;gap:9px;font-size:12px;color:#dbeafe}.file-dot{width:8px;height:8px;border-radius:50%;background:#34d399}.editor-actions{display:flex;gap:8px;align-items:center}.compiler-btn{border:1px solid rgba(148,163,184,.22);border-radius:10px;padding:10px 14px;color:#dbeafe;background:#182338;font-weight:700;font-size:12px;cursor:pointer}.compiler-btn:hover{filter:brightness(1.13)}.compiler-btn.run{background:linear-gradient(135deg,#0891b2,#4f46e5);border-color:transparent;color:white;box-shadow:0 6px 20px rgba(79,70,229,.22)}.compiler-btn:disabled{opacity:.55;cursor:wait}.editor-workspace{display:grid;grid-template-columns:minmax(0,1fr);padding:14px;background:#090e19}.code-area{width:100%;min-height:300px;resize:vertical;border:1px solid rgba(148,163,184,.13);border-radius:12px;background:#090e19;color:#dbeafe;padding:18px;font:13px/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;tab-size:4;outline:none;white-space:pre;overflow:auto}.code-area:focus{border-color:rgba(103,232,249,.45);box-shadow:0 0 0 3px rgba(34,211,238,.07)}
+  #editorContainer{width:100%;height:440px;min-height:300px;border:1px solid rgba(148,163,184,.13);border-radius:12px;overflow:hidden;background:#1e1e1e} .editor-help{display:flex;flex-wrap:wrap;gap:8px;padding:8px 12px;background:#0e1728;border:1px solid rgba(148,163,184,.12);border-top:0;border-radius:0 0 10px 10px;color:#91a1ba;font-size:11px}.editor-help kbd{font:inherit;color:#dbeafe;background:#1c2a40;border:1px solid #334155;border-radius:4px;padding:2px 5px} .editor-loading{padding:20px;color:#9ca3af;font:13px ui-monospace,monospace}.stdin-wrap{padding:0 14px 14px;background:#090e19}.input-label{display:block;font-size:11px;color:#9aa9c0;font-weight:700;margin:0 0 7px;letter-spacing:.04em}.stdin-area{width:100%;min-height:62px;resize:vertical;border:1px solid rgba(148,163,184,.14);border-radius:10px;background:#0d1524;color:#dbeafe;padding:10px;font:12px/1.6 ui-monospace,monospace;outline:none}.console{margin:0 14px 14px;border:1px solid rgba(148,163,184,.16);border-radius:12px;overflow:hidden;background:#070b13}.console-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 13px;border-bottom:1px solid rgba(148,163,184,.13);font-size:11px;color:#a8b6cd;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.console-status{font-size:10px;color:#93c5fd;text-transform:none;letter-spacing:0}.console-output{min-height:90px;max-height:260px;overflow:auto;margin:0;padding:14px;color:#c7d2e5;font:12px/1.7 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere}.console-output.error{color:#fca5a5}.console-output:empty:before{content:'Your program output will appear here.';color:#59677e}.compiler-note{display:flex;gap:10px;align-items:flex-start;margin:18px 2px 0;color:#7f8da5;font-size:12px;line-height:1.7}.compiler-note b{color:#b8c7dc}.compiler-below{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:20px}.compiler-benefit{padding:18px;border:1px solid rgba(148,163,184,.15);border-radius:16px;background:rgba(15,23,42,.55)}.compiler-benefit strong{display:block;color:#e5edff;font-size:13px;margin:9px 0 5px}.compiler-benefit p{margin:0;color:#8492aa;font-size:12px;line-height:1.65}.benefit-icon{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:rgba(34,211,238,.1);color:#67e8f9;font-size:17px}
+  @media(max-width:850px){.compiler-layout{grid-template-columns:1fr}.language-list{grid-template-columns:repeat(2,minmax(0,1fr))}.language-panel{padding-bottom:3px}.compiler-below{grid-template-columns:1fr}}@media(max-width:520px){.compiler-page{padding-top:15px}.compiler-hero{border-radius:20px;padding:25px 19px}.compiler-hero h1{font-size:36px}.language-list{grid-template-columns:1fr 1fr;padding:0 9px 12px;gap:5px}.language-option{padding:9px 7px;gap:8px}.lang-icon{width:31px;height:31px;flex-basis:31px;border-radius:9px}.lang-meta strong{font-size:12px}.lang-meta small{font-size:10px}.editor-toolbar{padding:12px}.editor-actions{width:100%}.editor-actions .compiler-btn{flex:1}.code-area{min-height:260px;padding:12px;font-size:12px}.editor-workspace{padding:9px}.stdin-wrap,.console{margin-left:9px;margin-right:9px}.stdin-wrap{padding:0 0 10px}.console{margin-bottom:10px}.compiler-stats{gap:7px}.compiler-stat{font-size:10px}}
+</style>
+{% endblock %}
+{% block content %}
+<section class="compiler-page">
+  <div class="compiler-hero">
+    <div class="compiler-kicker">NIKSS Developer Workspace</div>
+    <h1>One workspace.<br><span>Every language.</span></h1>
+    <p>Write, compile and run code online. Choose a language, test your ideas, read errors and keep building — without installing a local compiler.</p>
+    <div class="compiler-stats"><span class="compiler-stat">⌘ 21 languages</span><span class="compiler-stat">⚡ Fast execution</span><span class="compiler-stat">◈ Separate sessions</span><span class="compiler-stat">✓ Beginner friendly</span></div>
+  </div>
+  <div class="compiler-layout">
+    <aside class="language-panel">
+      <div class="panel-heading"><h2>Choose language</h2><p>Pick a language to load its starter code.</p></div>
+      <div class="language-list" id="languageList">
+        {% for key, lang in languages.items() %}
+        <button type="button" class="language-option {% if key == 'python' %}active{% endif %}" data-language="{{ key }}" data-starter="{{ lang.starter }}" aria-pressed="{{ 'true' if key == 'python' else 'false' }}">
+          <span class="lang-icon">{% if key == 'html' %}HT{% elif key == 'css' %}CS{% elif key == 'javascript' %}JS{% elif key == 'typescript' %}TS{% elif key == 'csharp' %}C#{% elif key == 'cpp' %}C++{% elif key == 'python' %}Py{% elif key == 'java' %}Jv{% elif key == 'php' %}PHP{% elif key == 'sql' %}SQL{% elif key == 'kotlin' %}Kt{% elif key == 'swift' %}Sw{% elif key == 'ruby' %}Rb{% elif key == 'rust' %}Rs{% elif key == 'scala' %}Sc{% elif key == 'bash' %}Sh{% else %}{{ lang.name[:2] }}{% endif %}</span>
+          <span class="lang-meta"><strong>{{ lang.name }}</strong><small>{% if key in ['html', 'css'] %}Browser preview{% elif key == 'sql' %}Query playground{% elif key in ['javascript', 'typescript'] %}JavaScript runtime{% else %}Online compiler{% endif %}</small></span>
+          <span class="check">✓</span>
+        </button>
+        {% endfor %}
+      </div>
+    </aside>
+    <section class="editor-panel" aria-label="Online code editor">
+      <div class="editor-toolbar">
+        <div class="file-tab"><span class="file-dot"></span><span id="fileName">main.py</span><span style="color:#64748b">· UTF-8</span></div>
+        <div class="editor-actions"><button type="button" class="compiler-btn" id="resetCode">Reset code</button><button type="button" class="compiler-btn run" id="runCode">▶ &nbsp;Run code</button></div>
+      </div>
+      <div class="editor-workspace"><div style="width:100%;min-width:0"><div id="editorContainer" aria-label="VS Code style code editor"><div class="editor-loading">Loading code editor…</div></div><div class="editor-help"><span>Smart suggestions</span><span><kbd>Ctrl</kbd> + <kbd>Space</kbd></span><span>Run code</span><span><kbd>Ctrl</kbd> + <kbd>Enter</kbd></span><span>Indentation &amp; bracket matching enabled</span></div><textarea id="sourceCodeFallback" class="code-area" style="display:none" spellcheck="false" aria-label="Fallback code editor">print("Hello, NIKSS Coding Hub!")</textarea></div></div>
+      <div class="stdin-wrap"><label class="input-label" for="stdin">CUSTOM INPUT (OPTIONAL)</label><textarea class="stdin-area" id="stdin" placeholder="Enter input for your program here..."></textarea></div>
+      <div class="console"><div class="console-head"><span>▣ &nbsp; Output console</span><span class="console-status" id="runStatus">Ready to run</span></div><pre class="console-output" id="consoleOutput" aria-live="polite"></pre></div>
+      <section id="webPreviewPanel" class="console" style="display:none" aria-label="HTML and CSS preview"><div class="console-head"><span>◫ &nbsp; Browser preview</span><span class="console-status">Sandboxed preview</span></div><iframe id="webPreview" title="Website preview" sandbox="" referrerpolicy="no-referrer" style="display:block;width:100%;height:280px;border:0;background:#fff"></iframe></section>
+    </section>
+  </div>
+  <div class="compiler-note"><span>ⓘ</span><span><b>Safe execution:</b> your code is sent to a separate code-execution service. Do not enter passwords, API keys or other secrets into sample programs. Execution availability depends on the configured compiler service.</span></div>
+  <div class="compiler-below"><article class="compiler-benefit"><span class="benefit-icon">⌘</span><strong>Switch languages instantly</strong><p>Move between Python, Java, C, C++, JavaScript, TypeScript, C#, PHP, Go, Rust, Ruby, Kotlin, Swift, R, Bash, Perl, Lua, Scala and SQL from one workspace.</p></article><article class="compiler-benefit"><span class="benefit-icon">⚡</span><strong>Run and debug</strong><p>View standard output, compile errors and runtime errors in a dedicated console.</p></article><article class="compiler-benefit"><span class="benefit-icon">♧</span><strong>Your own execution</strong><p>Each run is a separate submission, so different users can work in different languages at the same time.</p></article></div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/loader.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  (() => {
+    const languageButtons = [...document.querySelectorAll('.language-option')];
+    const editorHost = document.getElementById('editorContainer');
+    const fallback = document.getElementById('sourceCodeFallback');
+    const runButton = document.getElementById('runCode');
+    const resetButton = document.getElementById('resetCode');
+    const output = document.getElementById('consoleOutput');
+    const status = document.getElementById('runStatus');
+    const fileName = document.getElementById('fileName');
+    const stdin = document.getElementById('stdin');
+    const filenames = {html:'index.html',css:'styles.css',c:'main.c',cpp:'main.cpp',java:'Main.java',python:'main.py',javascript:'main.js',typescript:'main.ts',csharp:'Program.cs',php:'main.php',sql:'query.sql',go:'main.go',rust:'main.rs',ruby:'main.rb',kotlin:'Main.kt',swift:'main.swift',r:'main.r',bash:'main.sh',perl:'main.pl',lua:'main.lua',scala:'Main.scala'};
+    const monacoLanguages = {html:'html',css:'css',c:'c',cpp:'cpp',java:'java',python:'python',javascript:'javascript',typescript:'typescript',csharp:'csharp',php:'php',sql:'sql',go:'go',rust:'rust',ruby:'ruby',kotlin:'kotlin',swift:'swift',r:'r',bash:'shell',perl:'perl',lua:'lua',scala:'scala'};
+    let activeLanguage = 'python';
+    let starter = languageButtons.find(b => b.dataset.language === 'python')?.dataset.starter || 'print("Hello, NIKSS Coding Hub!")';
+    let monacoEditor = null;
+    const getCode = () => monacoEditor ? monacoEditor.getValue() : fallback.value;
+    const setCode = value => { if (monacoEditor) monacoEditor.setValue(value); fallback.value = value; };
+    const setLanguage = key => {
+      activeLanguage = key;
+      const button = languageButtons.find(b => b.dataset.language === key);
+      starter = button?.dataset.starter || '';
+      languageButtons.forEach(item => { const active = item.dataset.language === key; item.classList.toggle('active', active); item.setAttribute('aria-pressed', String(active)); });
+      fileName.textContent = filenames[key] || 'main.txt';
+      if (monacoEditor && window.monaco) monaco.editor.setModelLanguage(monacoEditor.getModel(), monacoLanguages[key] || 'plaintext');
+      setCode(starter);
+      output.textContent = ''; output.classList.remove('error'); status.textContent = 'Ready to run';
+      if (monacoEditor) monacoEditor.focus();
+    };
+    languageButtons.forEach(button => button.addEventListener('click', () => setLanguage(button.dataset.language)));
+
+    function startMonaco() {
+      if (!window.require || !window.require.config) throw new Error('Editor loader unavailable');
+      window.require.config({paths:{vs:'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs'}});
+      window.require(['vs/editor/editor.main'], function () {
+        window.monaco.editor.defineTheme('nikss-dark', {
+          base:'vs-dark', inherit:true, rules:[
+            {token:'comment',foreground:'7F9F86',fontStyle:'italic'},
+            {token:'keyword',foreground:'C586C0'},
+            {token:'string',foreground:'CE9178'},
+            {token:'number',foreground:'B5CEA8'},
+            {token:'type',foreground:'4EC9B0'},
+            {token:'function',foreground:'DCDCAA'}
+          ], colors:{'editor.background':'#090e19','editorLineNumber.foreground':'#526079','editorLineNumber.activeForeground':'#cbd5e1','editorCursor.foreground':'#67e8f9','editor.selectionBackground':'#264f78','editorSuggestWidget.background':'#111b2c','editorSuggestWidget.border':'#334155','editorSuggestWidget.selectedBackground':'#243852'}
+        });
+        editorHost.innerHTML = '';
+        monacoEditor = monaco.editor.create(editorHost, {
+          value:starter, language:'python', theme:'nikss-dark', automaticLayout:true,
+          fontFamily:'Cascadia Code, Consolas, monospace', fontSize:13, lineHeight:22,
+          minimap:{enabled:false}, lineNumbers:'on', roundedSelection:true,
+          scrollBeyondLastLine:false, tabSize:4, insertSpaces:true, wordWrap:'off',
+          quickSuggestions:{other:true,comments:false,strings:true}, suggestOnTriggerCharacters:true,
+          acceptSuggestionOnEnter:'on', snippetSuggestions:'top', parameterHints:{enabled:true},
+          bracketPairColorization:{enabled:true}, guides:{bracketPairs:true,indentation:true},
+          padding:{top:14,bottom:14}, ariaLabel:'NIKSS Coding Hub code editor'
+        });
+        fallback.style.display='none';
+        const completions = {
+          python:[['print','print(${1:value})','Print a value'],['input','input(${1:"Enter value: "})','Read user input'],['def','def ${1:function_name}(${2}):\n    ${3:pass}','Create a function'],['for','for ${1:item} in ${2:items}:\n    ${3:print(item)}','For loop'],['if','if ${1:condition}:\n    ${2:pass}','If statement'],['class','class ${1:ClassName}:\n    def __init__(self):\n        ${2:pass}','Create a class']],
+          java:[['sout','System.out.println(${1:"Hello"});','Print a line'],['main','public static void main(String[] args) {\n    ${1}\n}','Main method'],['for','for (int i = 0; i < ${1:10}; i++) {\n    ${2}\n}','For loop']],
+          javascript:[['log','console.log(${1:value});','Print to console'],['function','function ${1:name}(${2}) {\n    ${3}\n}','Create a function'],['const','const ${1:name} = ${2:value};','Declare a constant']],
+          typescript:[['log','console.log(${1:value});','Print to console'],['interface','interface ${1:Name} {\n    ${2:property}: ${3:string};\n}','Create an interface']],
+          c:[['printf','printf("%s\n", ${1:"Hello"});','Print formatted text'],['main','int main(void) {\n    ${1:return 0;}\n}','Main function']],
+          cpp:[['cout','cout << ${1:"Hello"} << endl;','Print a line'],['main','int main() {\n    ${1:return 0;}\n}','Main function']],
+          csharp:[['cw','Console.WriteLine(${1:"Hello"});','Print a line'],['main','static void Main() {\n    ${1}\n}','Main method']],
+          php:[['echo','echo ${1:"Hello"};','Output text'],['foreach','foreach (${1:$items} as ${2:$item}) {\n    ${3}\n}','Foreach loop']],
+          sql:[['select','SELECT ${1:*} FROM ${2:table_name};','Select query'],['where','WHERE ${1:column} = ${2:value}','Where clause']],
+          go:[['print','fmt.Println(${1:"Hello"})','Print a line'],['func','func ${1:name}() {\n    ${2}\n}','Create a function']],
+          rust:[['println','println!("{}", ${1:value});','Print formatted text'],['fn','fn ${1:name}() {\n    ${2}\n}','Create a function']],
+          ruby:[['puts','puts ${1:"Hello"}','Print a line'],['def','def ${1:name}\n    ${2}\nend','Create a method']],
+          kotlin:[['println','println(${1:"Hello"})','Print a line'],['fun','fun ${1:name}() {\n    ${2}\n}','Create a function']],
+          swift:[['print','print(${1:"Hello"})','Print a line'],['func','func ${1:name}() {\n    ${2}\n}','Create a function']],
+          bash:[['echo','echo ${1:"Hello"}','Print text'],['if','if [[ ${1:condition} ]]; then\n    ${2}\nfi','If statement']],
+          r:[['print','print(${1:value})','Print a value'],['function','${1:name} <- function(${2}) {\n    ${3}\n}','Create a function']]
+        };
+        Object.entries(completions).forEach(([lang, items]) => {
+          if (!monaco.languages.getLanguages().some(x => x.id === lang)) return;
+          monaco.languages.registerCompletionItemProvider(lang, {provideCompletionItems:(model, position) => ({suggestions:items.map(([label,insertText,detail]) => { const word=model.getWordUntilPosition(position); return {label,kind:monaco.languages.CompletionItemKind.Snippet,insertText,insertTextRules:monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,detail,range:new monaco.Range(position.lineNumber,word.startColumn,position.lineNumber,word.endColumn)}; })})});
+        });
+        monacoEditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => runCode());
+        monacoEditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Space, () => monacoEditor.trigger('keyboard','editor.action.triggerSuggest',{}));
+        monacoEditor.onDidChangeModelContent(() => { try { localStorage.setItem('nikss-code-'+activeLanguage, getCode()); } catch (_) {} });
+        setLanguage('python');
+      });
+    }
+    try { startMonaco(); } catch (_) {
+      editorHost.innerHTML = '';
+      fallback.style.display = 'block';
+      fallback.style.display = 'block';
+      fallback.value = starter;
+      status.textContent = 'Basic editor mode';
+    }
+    // If the Monaco CDN fails after the loader begins, keep a usable plain-text editor.
+    setTimeout(() => { if (!monacoEditor) { fallback.style.display = 'block'; if (!fallback.value) fallback.value = starter; editorHost.innerHTML = '<div class="editor-loading">Syntax-colour editor could not load. Basic editor is available below.</div>'; } }, 9000);
+
+    resetButton.addEventListener('click', () => { setCode(starter); output.textContent=''; output.classList.remove('error'); status.textContent='Code reset'; if (monacoEditor) monacoEditor.focus(); });
+    function renderBrowserPreview(code) {
+      const panel = document.getElementById('webPreviewPanel');
+      const frame = document.getElementById('webPreview');
+      const escapeForStyle = value => value.replace(/<\/style/gi, '<\\/style');
+      let documentText;
+      if (activeLanguage === 'html') {
+        documentText = '<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;; img-src data:; style-src &#39;unsafe-inline&#39;; font-src data:;">' +
+                '<style>body{font-family:system-ui,sans-serif;padding:24px;color:#172033}img{max-width:100%}</style></head><body>' + code + '</body></html>';
+      } else {
+        documentText = '<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;; img-src data:; style-src &#39;unsafe-inline&#39;; font-src data:;">' +
+                '<style>' + escapeForStyle(code) + '</style></head><body><h1>NIKSS Coding Hub</h1><p>Edit the CSS to change this preview.</p><button>Example button</button><div class="sample-card">Sample card</div></body></html>';
+      }
+      frame.srcdoc = documentText;
+      panel.style.display = 'block';
+      output.textContent = 'Preview updated in the sandboxed browser frame. HTML/CSS preview does not run server-side code.';
+      output.classList.remove('error');
+      status.textContent = 'Preview ready';
+    }
+    async function runCode() {
+      const code = getCode();
+      if (!code.trim()) { output.textContent='Write some code before running it.'; output.classList.add('error'); return; }
+      if (activeLanguage === 'html' || activeLanguage === 'css') { renderBrowserPreview(code); return; }
+      const previewPanel = document.getElementById('webPreviewPanel'); if (previewPanel) previewPanel.style.display = 'none';
+      runButton.disabled=true; runButton.textContent='Running…'; status.textContent='Executing'; output.classList.remove('error'); output.textContent='Submitting code to the compiler…';
+      try {
+        const response = await fetch('{{ url_for("run_online_compiler") }}', {method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({language:activeLanguage,code,stdin:stdin.value})});
+        const result = await response.json();
+        if (!response.ok || !result.ok) throw new Error(result.error || 'Compiler request failed.');
+        const sections=[];
+        if (result.stdout) sections.push(result.stdout.replace(/\n+$/,''));
+        if (result.compile_output) sections.push('--- Compile output ---\n'+result.compile_output.replace(/\n+$/,''));
+        if (result.stderr) sections.push('--- Errors / diagnostics ---\n'+result.stderr.replace(/\n+$/,''));
+        if (!sections.length) sections.push(result.status || 'Execution completed with no output.');
+        output.textContent=sections.join('\n\n');
+        output.classList.toggle('error',/error|failed|time limit|runtime error/i.test(result.status||'') || Boolean(result.compile_output) || Boolean(result.stderr));
+        const details=[]; if(result.status)details.push(result.status); if(result.time)details.push(result.time+' s'); status.textContent=details.join(' · ')||'Finished';
+      } catch(error) { output.textContent=error.message||'Could not run code. Please try again.'; output.classList.add('error'); status.textContent='Execution failed'; }
+      finally { runButton.disabled=false; runButton.innerHTML='▶ &nbsp;Run code'; }
+    }
+    runButton.addEventListener('click',runCode);
+    fallback.addEventListener('keydown',event=>{if(event.key==='Enter'&&(event.ctrlKey||event.metaKey)){event.preventDefault();runCode();}});
+  })();
+</script>
+{% endblock %}
